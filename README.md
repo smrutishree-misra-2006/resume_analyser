@@ -234,4 +234,80 @@ npm run dev
 
 ### 3. Set Up the Node.js Backend
 
-Open a new terminal in the project
+Open a new terminal in the project root:
+
+```bash
+npm install
+```
+
+Start the backend using the start script defined in the root `package.json`.
+
+### 4. Set Up the Python ML Service
+
+Open another terminal:
+
+```bash
+cd ml_service
+
+python -m venv venv
+```
+
+Activate the virtual environment.
+
+**Windows PowerShell:**
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+Install Python dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the FastAPI application:
+
+```bash
+uvicorn app:app --reload --port 8000
+```
+
+The above command assumes that `app.py` exposes a FastAPI instance named `app`.
+
+> Configure the backend URLs, database connection, and environment variables according to the application's configuration before running all services together.
+
+## Deployment Architecture
+
+The application is designed for separate frontend and backend deployment.
+
+| Component | Platform |
+|---|---|
+| React + Vite frontend | Vercel |
+| Node.js + Express backend | Render |
+| Python + FastAPI ML service | Render |
+
+The frontend communicates with the Node.js backend through the configured API URL. The Node.js backend communicates with the Python ML service for resume analysis and recommendations.
+
+## Future Improvements
+
+- Improve classification performance through model experimentation and hyperparameter tuning.
+- Enhance job recommendations using semantic similarity and advanced NLP techniques.
+- Improve skill extraction and entity recognition.
+- Add resume feedback and improvement suggestions.
+- Expand the job dataset and improve recommendation relevance.
+- Introduce additional analytics and personalized career insights.
+
+## Author
+
+**Smruti Shree Misra**
+
+B.Tech – Electronics and Telecommunication Engineering
+
+Veer Surendra Sai University of Technology (VSSUT), Burla
+
+- GitHub: [smrutishree-misra-2006](https://github.com/smrutishree-misra-2006)
+- LinkedIn: [Profile](https://linkedin.com/in/smrutishree-misra-89966b32a)
+
+---
+
+*Built to make resume analysis, skill assessment, and job discovery more accessible through machine learning.*
