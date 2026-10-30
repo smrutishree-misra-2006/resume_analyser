@@ -1,80 +1,112 @@
-# AI-Powered Resume Analyzer & Job Matcher
+# Resume Analyzer – AI-Powered Resume Analysis & Job Recommendation System
 
-An intelligent, full-stack web application that analyzes resumes, identifies suitable career fields, extracts technical skills, detects skill gaps, and recommends relevant real-world job postings.
+An AI-powered resume analysis platform that analyzes resumes, extracts relevant skills, predicts suitable career categories, identifies skill gaps, and recommends relevant job opportunities.
+
+The application combines a React-based frontend, a Node.js backend, and a Python-based machine learning service to provide an integrated resume analysis experience.
 
 ## Features
 
-- **Resume Upload:** Upload PDF resumes (up to 5 MB) or paste resume text.
-- **Career Field Prediction:** Predicts suitable professional categories using a machine learning classifier.
-- **Skill Extraction:** Automatically identifies technical skills and technologies mentioned in resumes.
-- **Skill Gap Analysis:** Identifies skills frequently requested by matching job postings but missing from the resume.
-- **Job Recommendations:** Recommends relevant job postings using TF-IDF vectorization and similarity scoring.
-- **Match Explanation:** Displays shared skills that contribute to each job recommendation.
-- **User Authentication:** Provides login and registration functionality.
-- **Search History:** Keeps track of previous resume analyses.
-- **Interactive Dashboard:** Displays predicted career fields, extracted skills, and job recommendations.
+- **Resume Upload:** Upload resumes in PDF format or enter resume content directly.
+- **Skill Extraction:** Extract technical skills and relevant keywords from resume content.
+- **Career Category Prediction:** Predict suitable professional categories using a machine learning classifier.
+- **Job Recommendations:** Recommend relevant job postings using TF-IDF vectorization and similarity scoring.
+- **Skill Gap Analysis:** Identify missing skills by comparing resume skills with job requirements.
+- **Match Scoring:** Display similarity-based scores for recommended job postings.
+- **User Authentication:** Provide authenticated access to application features.
+- **Analysis History:** Maintain access to previous resume analysis results.
+- **Interactive Dashboard:** Display predictions, extracted skills, missing skills, and job recommendations.
 
 ## Tech Stack
 
 | Component | Technologies |
 |---|---|
-| Frontend | React.js, Vite, CSS |
-| Backend API | Node.js, Express.js |
-| Machine Learning Service | Python, FastAPI, Scikit-learn |
-| ML Techniques | TF-IDF, LinearSVC, Cosine Similarity |
-| Data Processing | Pandas, NumPy |
-| Authentication | JWT |
-| Database | MongoDB |
-| PDF Processing | PyPDF |
+| Frontend | React.js, Vite, JavaScript, CSS |
+| Backend | Node.js, Express.js |
+| Machine Learning | Python, Scikit-learn |
+| NLP & Feature Extraction | TF-IDF, text preprocessing |
+| ML Service | FastAPI |
+| Database | MongoDB / Mongoose (if configured) |
+| Model Storage | Pickle, Joblib |
+| Version Control | Git, GitHub |
 
-## Machine Learning
+## Project Architecture
 
-### 1. Career Field Classification
+The application follows a modular architecture with three primary components.
 
-- Uses TF-IDF to convert resume text into numerical feature vectors.
-- Uses a calibrated LinearSVC classifier to predict suitable career categories.
-- Trained on 2,481 resumes across 24 professional categories.
+### 1. Frontend – React + Vite
 
-**Model Performance:**
-- Classification accuracy: 70%
-- Top-3 accuracy: 91%
+Located in the `client/` directory.
 
-### 2. Job Matching
+Responsible for:
+- Providing the user interface.
+- Accepting PDF uploads and resume text.
+- Managing authentication and user interactions.
+- Sending requests to backend APIs.
+- Displaying resume analysis and job recommendation results.
 
-- Converts resume content and job descriptions into TF-IDF vectors.
-- Uses similarity scoring to identify relevant job postings.
-- Ranks jobs based on their similarity to the resume.
-- Extracts shared skills to explain recommendations.
+### 2. Backend – Node.js + Express.js
 
-### 3. Skill Gap Analysis
+Responsible for:
+- Handling REST API requests.
+- Managing authentication and authorization.
+- Processing resume-related requests.
+- Communicating with the Python ML service.
+- Managing user and resume-related data.
 
-- Extracts skills present in the uploaded resume.
-- Compares them against skills requested in relevant job descriptions.
-- Highlights frequently requested skills that are missing from the resume.
+### 3. Machine Learning Service – Python + FastAPI
 
-## Project Structure
+Located in the `ml_service/` directory.
+
+Responsible for:
+- Processing resume content.
+- Extracting relevant skills.
+- Predicting professional categories using a trained ML classifier.
+- Generating job recommendations through TF-IDF similarity.
+- Identifying missing skills based on job requirements.
+
+## Repository Structure
 
 ```text
 resume_analyser/
 │
-├── client/                  # React frontend
-│   ├── src/
-│   │   ├── App.jsx
-│   │   ├── App.css
-│   │   ├── Auth.jsx
-│   │   └── main.jsx
-│   └── package.json
+├── client/                         # React + Vite frontend
+│   ├── public/
+│   └── src/
+│       ├── assets/
+│       ├── App.jsx
+│       ├── App.css
+│       ├── Auth.jsx
+│       ├── index.css
+│       └── main.jsx
 │
-├── controllers/              # Express controllers
-├── middleware/               # Authentication middleware
-├── models/                   # Database models
-├── routes/                   # API routes
-├── data/                     # Application data
+├── controllers/                    # Backend controllers
+│   ├── authController.js
+│   ├── matchController.js
+│   ├── movieController.js
+│   └── resumeController.js
 │
-├── ml_service/               # Python ML service
+├── routes/                         # API routes
+│   ├── authRoutes.js
+│   ├── matchRoutes.js
+│   ├── movieRoutes.js
+│   └── resumeRoutes.js
+│
+├── models/                         # Data models
+│   ├── Resume.js
+│   └── User.js
+│
+├── middleware/                     # Authentication middleware
+│   └── authMiddleware.js
+│
+├── data/                           # Supporting data
+│   ├── movies.js
+│   └── users.js
+│
+├── ml_service/                     # Python ML service
 │   ├── app.py
 │   ├── skills.py
 │   ├── utils.py
+│   ├── train.py
 │   ├── train_classifier.py
 │   ├── build_jobs_index.py
 │   ├── classifier.pkl
@@ -84,80 +116,122 @@ resume_analyser/
 │   ├── metrics.json
 │   └── requirements.txt
 │
-├── server.js
+├── server/                         # Additional server-related files
+│   ├── index.js
+│   ├── package.json
+│   └── pnpm-lock.yaml
+│
+├── server.js                       # Root backend entry point
 ├── package.json
+├── package-lock.json
 └── README.md
 ```
 
-## Application Workflow
+## System Workflow
 
-1. User uploads a PDF resume or pastes resume text.
-2. The application extracts and cleans the resume content.
-3. The ML classifier predicts suitable career fields.
-4. The skill extraction module identifies technical skills.
-5. The job-matching engine compares the resume with available job descriptions.
-6. The skill-gap module identifies missing skills.
-7. The dashboard displays career predictions, skills, and recommended job postings.
+```text
+              USER
+                |
+                v
+       React + Vite Frontend
+                |
+                v
+       Node.js / Express API
+                |
+                v
+       Python / FastAPI Service
+                |
+       +--------+---------+
+       |        |         |
+       v        v         v
+    Resume   Career     Job
+    Skills   Prediction Matching
+    Extract  Model      Engine
+       |        |         |
+       +--------+---------+
+                |
+                v
+        Analysis Results
+                |
+                v
+        React Dashboard
+```
+
+### Workflow Explanation
+
+1. The user uploads a PDF resume or enters resume text.
+2. The frontend sends the resume data to the Node.js backend.
+3. The backend forwards the analysis request to the Python ML service.
+4. The ML service processes the resume and extracts relevant skills.
+5. A trained classification model predicts suitable professional categories.
+6. The job recommendation engine compares resume content with job descriptions using TF-IDF and similarity scoring.
+7. The system identifies missing skills based on job requirements.
+8. The backend returns the results to the frontend.
+9. The dashboard displays the analysis and recommended job opportunities.
+
+## Machine Learning Approach
+
+### 1. Resume Classification
+
+A supervised machine learning classification pipeline is used to predict suitable professional categories based on resume content.
+
+- Text preprocessing and feature extraction.
+- TF-IDF-based text representation.
+- Trained classification models.
+- Prediction of relevant career categories.
+
+**Reported model evaluation:**
+- Classification accuracy: approximately 70%.
+- Top-3 accuracy: approximately 91%.
+
+Top-3 accuracy means that the correct category appears among the model's three highest-ranked predictions. It is not the same as overall classification accuracy.
+
+### 2. Job Recommendation Engine
+
+A content-based recommendation approach is used to identify relevant job postings.
+
+- Convert resume content into numerical TF-IDF representations.
+- Represent job descriptions using the same feature space.
+- Calculate similarity between resume and job representations.
+- Rank job postings according to similarity scores.
+- Return relevant job recommendations.
+
+The displayed match scores represent text similarity, not the probability of getting hired.
+
+### 3. Skill Gap Analysis
+
+The system compares extracted resume skills with the skills mentioned in job requirements.
+
+It provides:
+- Skills already present in the resume.
+- Skills missing for relevant job opportunities.
+- Potential areas for further learning and improvement.
 
 ## Installation and Setup
 
 ### Prerequisites
 
 - Node.js and npm
-- Python 3.10+
-- MongoDB
+- Python 3.x
 - Git
+- MongoDB, if database functionality is enabled
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/smrutishree-misra-2006/resume_analyser.git
+
 cd resume_analyser
 ```
 
-### 2. Install Frontend Dependencies
+### 2. Set Up the Frontend
 
 ```bash
 cd client
 npm install
+npm run dev
 ```
 
-### 3. Install Python Dependencies
+### 3. Set Up the Node.js Backend
 
-```bash
-cd ../ml_service
-pip install -r requirements.txt
-```
-
-### 4. Configure Environment Variables
-
-Create the required `.env` files for the frontend, backend, and database configuration.
-
-Do not commit credentials, database URLs, or secret keys to GitHub.
-
-### 5. Run the Application
-
-Start the frontend, Node.js backend, and Python ML service using their respective development commands.
-
-Configure the API URLs and service ports according to your environment.
-
-## Future Improvements
-
-- Improve career classification with larger and more specialized datasets.
-- Introduce semantic embeddings for better job recommendations.
-- Improve job ranking using career-track relevance and experience requirements.
-- Enhance skill extraction and skill-gap analysis.
-- Add resume scoring and actionable improvement suggestions.
-- Improve PDF parsing and support more resume formats.
-
-## Author
-
-**Smrutishree Misra**
-
-B.Tech – Electronics and Telecommunication Engineering
-
-GitHub: [smrutishree-misra-2006](https://github.com/smrutishree-misra-2006)
-
----
-
-*Built to make resume analysis, career discovery, and job matching more accessible through machine learning.*
+Open a new terminal in the project
