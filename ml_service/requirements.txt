@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pypdf
+python-multipart
+scikit-learn==X.X.X
+numpy==X.X.X
+scipy==X.X.X
+pandas==X.X.X
+joblib==X.X.X

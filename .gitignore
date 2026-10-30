@@ -1,0 +1,11 @@
+node_modules
+node_modules_old
+.env
+__pycache__
+*.old
+dist
+postings.csv
+Resume.csv
+jobs.csv
+vectorizer.pkl
+job_vectors.pkl

@@ -1,0 +1,7 @@
+{
+    "model": "LinearSVC (calibrated)",
+    "accuracy": 0.7,
+    "top3_accuracy": 0.909,
+    "rows": 2481,
+    "categories": 24
+}
