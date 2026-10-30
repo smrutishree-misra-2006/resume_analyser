@@ -2,8 +2,8 @@ fastapi
 uvicorn
 pypdf
 python-multipart
-scikit-learn==X.X.X
-numpy==X.X.X
-scipy==X.X.X
-pandas==X.X.X
-joblib==X.X.X
+scikit-learn==1.6.1
+numpy==2.3.3
+scipy==1.16.2
+pandas==2.2.3
+joblib==1.5.2
